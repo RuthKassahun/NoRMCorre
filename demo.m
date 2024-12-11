@@ -14,7 +14,7 @@ if ~exist(name,'file')  % download file if it doesn't exist in the directory
     fprintf('done.');
     end 
 %}
-name = 'D:\Research\calcium_imaging_data\bessel_original\ChanA_001_001_001_001.tif';
+name = 'D:\Research\green_timeseries_channel_jitter_removed\all_green_timeseries_channel_jitter_remoed\green_timeseries_channel_jitter_removed.tif';
 tic; Y = read_file(name); toc; % read the file (optional, you can also pass the path in the function instead of Y)
 Y = single(Y);                 % convert to single precision 
 T = size(Y,ndims(Y));
@@ -86,7 +86,11 @@ end
 
 %% save the motion corrected video file
 
-t = Tiff('motion_corrected.tif', 'w');
+[folder, ~, ~] = fileparts(name);
+newFilePath = fullfile(folder, 'motion_corrected.tif');
+t = Tiff(newFilePath, 'w');
+
+%t = Tiff('motion_corrected.tif', 'w');
 tagstruct.ImageLength = size(M2, 1);
 tagstruct.ImageWidth = size(M2, 2);
 tagstruct.SampleFormat = Tiff.SampleFormat.UInt; 
@@ -104,7 +108,8 @@ for ii = 1:size(M2_rescaled, 3)
    writeDirectory(t);
 end
 
-close(t);
+
+
 
 
 
